@@ -1,6 +1,6 @@
 const Command = require("../Structures/Command.js");
 const fetch = require("node-fetch");
-const key = "";
+const key = "api_key=RGAPI-21287aed-9b4d-4478-b414-005c51a88d5d";
 
 const capitalize = (s) => {
     s = s.toLowerCase();
@@ -25,7 +25,7 @@ function round(value, decimals) {
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
-const playerNames = ["Melvin", "Hebbe", "Killa2k", "DogOnMan", "Rasékz", "magicaljournies", "Chad Donderpik"];
+const playerNames = ["Melvin", "Hebbe", "Killa2k", "DogOnMan", "Rasékz", "magicaljournies", "Chad Donderpik", "I Main Fizz", "Ablus"];
 let soloqData = [];
 let players = [];
 for (let i = 0; i < playerNames.length; i++) {
@@ -45,6 +45,7 @@ for (let i = 0; i < playerNames.length; i++) {
 module.exports = new Command({
     name: "soloq",
     description: "displays league soloq leaderboards",
+    permission: "SEND_MESSAGES",
 
     async run(message, args, client) {
         // converts summoner names to id's

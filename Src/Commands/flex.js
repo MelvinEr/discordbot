@@ -1,11 +1,12 @@
 const Command = require("../Structures/Command.js");
+const leagueConfig = require("../Data/leagueConfig.json");
 const fetch = require("node-fetch");
-const key = "";
+const key = leagueConfig.key;
 
 const capitalize = (s) => {
     s = s.toLowerCase();
     if (typeof s !== 'string') return ''
-    return s.charAt(0).toUpperCase() + s.slice(1)
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function convertRank(rank) {
@@ -25,7 +26,7 @@ function round(value, decimals) {
     return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
 }
 
-const playerNames = ["Melvin", "Hebbe", "Killa2k", "DogOnMan", "Rasékz", "magicaljournies", "Chad Donderpik"];
+const playerNames = ["Melvin", "Hebbe", "Killa2k", "DogOnMan", "Rasékz", "magicaljournies", "Chad Donderpik", "I Main Fizz", "Ablus"];
 let soloqData = [];
 let players = [];
 for (let i = 0; i < playerNames.length; i++) {
@@ -45,18 +46,19 @@ for (let i = 0; i < playerNames.length; i++) {
 module.exports = new Command({
     name: "flex",
     description: "displays league flex leaderboards",
+    permission: "SEND_MESSAGES",
 
     async run(message, args, client) {
         // converts summoner names to id's
         for (let i = 0; i < players.length; i++) {
-            let link = `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${players[i].name}?${key}`
+            let link = `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${players[i].name}?${key}`;
             let response = await fetch(link);
             let jsonData = await response.json();
             players[i].id = jsonData.id;
         }
 
         for (let i = 0; i < players.length; i++) {
-            let link = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${players[i].id}?${key}`
+            let link = `https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/${players[i].id}?${key}`;
             let response = await fetch(link);
             let jsonData = await response.json();
             for (let i = 0; i < jsonData.length; i++) {
@@ -75,11 +77,11 @@ module.exports = new Command({
             players[i].winrate = round((players[i].wins / (players[i].wins + players[i].losses)), 2);
             players[i].winrate = players[i].winrate.toString();
             if(players[i].winrate.length < 4) {
-                players[i].winrate = players[i].winrate.slice(2)
+                players[i].winrate = players[i].winrate.slice(2);
                 players[i].winrate += "0";
             }
             else {
-                players[i].winrate = players[i].winrate.slice(2)
+                players[i].winrate = players[i].winrate.slice(2);
             }
         }
         // convert ranks to integers for sorting
@@ -115,27 +117,27 @@ module.exports = new Command({
             }
             switch (players[i].rank) {
                 case 1:
-                    players[i].rankScore += 5
+                    players[i].rankScore += 5;
                     break;
                 case 2:
-                    players[i].rankScore += 4
+                    players[i].rankScore += 4;
                     break;
                 case 3:
-                    players[i].rankScore += 3
+                    players[i].rankScore += 3;
                     break;
                 case 4:
-                    players[i].rankScore += 2
+                    players[i].rankScore += 2;
                     break;
             }
-            players[i].rankScore += players[i].lp * 0.01
+            players[i].rankScore += players[i].lp * 0.01;
         }
 
-        players.sort((x,y) => {return y.rankScore - x.rankScore})
+        players.sort((x,y) => {return y.rankScore - x.rankScore});
 
         // generate the discord message
         let msg = "";
         for (let i = 0; i < players.length; i++) {
-            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n"
+            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n";
         }
         message.reply(msg);
     }
