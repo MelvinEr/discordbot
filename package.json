@@ -1,0 +1,17 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "melle",
+  "license": "ISC",
+  "dependencies": {
+    "amethyste-api": "^1.1.5",
+    "discord-fetch-all": "^3.0.2",
+    "discord.js": "^13.2.0",
+    "node-fetch": "^2.6.5"
+  }
+}
