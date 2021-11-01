@@ -1,6 +1,7 @@
 const Command = require("../Structures/Command.js");
+const leagueConfig = require("../Data/leagueConfig.json");
 const fetch = require("node-fetch");
-const key = "api_key=RGAPI-21287aed-9b4d-4478-b414-005c51a88d5d";
+const key = leagueConfig.key;
 
 const capitalize = (s) => {
     s = s.toLowerCase();
@@ -136,7 +137,7 @@ module.exports = new Command({
         // generate the discord message
         let msg = "";
         for (let i = 0; i < players.length; i++) {
-            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n";
+            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " - " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n";
         }
         message.reply(msg);
     }

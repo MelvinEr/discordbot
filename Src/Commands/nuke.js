@@ -21,7 +21,7 @@ module.exports = new Command({
         message.channel.bulkDelete(amountParsed);
         const msg = await message.channel.send(`Nuked ${amountParsed} messages`);
 
-        // 10 second delay before message deletes itself
-        setTimeout(() => msg.delete(), 10000);
+        // 7 second delay before message deletes itself
+        setTimeout(() => msg.delete(), 7000);
     }
 });

@@ -137,7 +137,7 @@ module.exports = new Command({
         // generate the discord message
         let msg = "";
         for (let i = 0; i < players.length; i++) {
-            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n";
+            msg += players[i].name + " - " + players[i].tier + " " + players[i].rank + " - " + players[i].lp + "LP - " + players[i].wins + "W " + players[i].losses + "L (" + players[i].winrate + "%)\n";
         }
         message.reply(msg);
     }
