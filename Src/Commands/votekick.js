@@ -1,6 +1,7 @@
 const Command = require("../Structures/Command.js");
 const Discord = require("discord.js");
 
+let kickTargetId = "";
 let votesString = "React with 👍 to kick, react with 👎 to keep \n\n";
 let votes = [];
 let hasVoted = [];
@@ -17,9 +18,15 @@ module.exports = new Command({
 
     async run(message, args, client) {
 
-        // converts user.id to user object
-        let kickTargetId = args[1];
-        kickTargetId = formatId(kickTargetId);
+        const kickTargetUsername = args[1];
+        if(kickTargetUsername[0] === "<") {
+            // fetch user id by @ => "?votekick @Melle"
+            kickTargetId = formatId(kickTargetUsername);
+        }
+        else {
+            // fetch user id by username (case sensitive) => "?votekick Melle#4544"
+            kickTargetId = client.users.cache.find(u => u.tag === kickTargetUsername).id
+        }
         const kickTarget = await client.users.fetch(kickTargetId, { cache: true });
         if (!kickTarget) { 
             message.reply("User not found");
@@ -53,7 +60,7 @@ module.exports = new Command({
             return reaction.emoji.name === '👍' || reaction.emoji.name === '👎';
         };
 
-        // collects reactions for 1 minute
+        // collects reactions for 3 minutes
         const collector = botMessage.createReactionCollector({ filter, time: 180000 });
 
         collector.on('collect', (reaction, user) => {
