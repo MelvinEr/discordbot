@@ -14,7 +14,7 @@ function formatId(id) {
 module.exports = new Command({
     name: "votekick",
     description: "kicks the user if vote majority",
-    permission: "ADMINISTRATOR" && "KICK_MEMBERS",
+    permission: "SEND_MESSAGES",
 
     async run(message, args, client) {
 

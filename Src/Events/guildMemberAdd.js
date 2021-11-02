@@ -1,5 +1,4 @@
 const Event = require("../Structures/Event.js");
-
 const Discord = require("discord.js")
 
 module.exports = new Event("guildMemberAdd", (client, member) => {
