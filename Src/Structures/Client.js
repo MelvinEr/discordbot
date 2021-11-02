@@ -24,7 +24,7 @@ class Client extends Discord.Client {
     }
 
     start(token) {
-        fs.readdirSync("./src/Commands")
+        fs.readdirSync("./Src/Commands")
             .filter(file => file.endsWith(".js"))
             .forEach(file => {
                 /**
@@ -36,7 +36,7 @@ class Client extends Discord.Client {
                 this.commands.set(command.name, command);
             });
 
-        fs.readdirSync("./src/Events")
+        fs.readdirSync("./Src/Events")
             .filter(file => file.endsWith(".js"))
             .forEach(file => {
                 /**
