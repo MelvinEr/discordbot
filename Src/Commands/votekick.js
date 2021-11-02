@@ -14,20 +14,21 @@ function formatId(id) {
 module.exports = new Command({
     name: "votekick",
     description: "kicks the user if vote majority",
-    permission: "SEND_MESSAGES",
+    permission: "ADMINISTRATOR" && "KICK_MEMBERS",
 
     async run(message, args, client) {
 
         const kickTargetUsername = args[1];
         if(kickTargetUsername[0] === "<") {
-            // fetch user id by @ => "?votekick @Melle"
+            // fetch user id by mention => "?votekick @Melle"
             kickTargetId = formatId(kickTargetUsername);
         }
         else {
             // fetch user id by username (case sensitive) => "?votekick Melle#4544"
             kickTargetId = client.users.cache.find(u => u.tag === kickTargetUsername).id
         }
-        const kickTarget = await client.users.fetch(kickTargetId, { cache: true });
+        const kickTarget = message.guild.members.cache.get(kickTargetId);
+        console.log(kickTarget.bannable);
         if (!kickTarget) { 
             message.reply("User not found");
             return;
@@ -35,14 +36,14 @@ module.exports = new Command({
 
         const embed = new Discord.MessageEmbed();
         embed
-            .setTitle("Votekick " + kickTarget.tag)
+            .setTitle("Votekick " + kickTarget.user.username)
 
             .setDescription(votesString)
 
             // .setColor("#FFFFFF")
             .setColor("AQUA")
 
-            .setThumbnail(kickTarget.avatarURL({ dynamic: true }))
+            .setThumbnail(kickTarget.user.avatarURL({ dynamic: true }))
             // .setThumbnail(client.user.avatarURL({ dynamic: true }))
 
             // returns current date if no parameters
@@ -82,24 +83,19 @@ module.exports = new Command({
                     votes.push(0);
                     votesString += "🟥 ";
                 }
-            }
-            else if(votes.length >= 5) {
-
-                // calculate vote result
-                let voteScore = 0;
-                for(let i = 0; i < votes.length; i++) {
-                    voteScore += votes[i];
+                if(votes.length >= 4) {
+                    // calculate vote result
+                    let voteScore = 0;
+                    for(let i = 0; i < votes.length; i++) {
+                        voteScore += votes[i];
+                    }
+                    if(voteScore >= 4) {
+                        kickTarget.kick();
+                    }
                 }
-                if(voteScore >= 4) {
-                    channel.send(kickTarget.tag + " was kicked");
-                    kickTarget.kick();
-                }
-            }
-            else {
-                console.log("idk chief something broke i guess")
             }
             
-            console.log(`Collected ${reaction.emoji.name} from ${user.tag}`);
+            console.log(`Collected ${reaction.emoji.name} from ${user.username}`);
 
             // update embed to show new votes
             let updatedEmbed = new Discord.MessageEmbed();
