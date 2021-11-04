@@ -7,6 +7,7 @@ const bingusImages = [
     "https://cdn.discordapp.com/attachments/454970814681317377/905158621938204702/bpgis.jpg",
     "https://cdn.discordapp.com/attachments/454970814681317377/905158666162929704/bagus_3.jpg"
 ];
+
 module.exports = new Command({
     name: "bingus",
     description: "displays random bingus",
