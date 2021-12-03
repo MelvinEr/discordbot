@@ -19,7 +19,7 @@ module.exports = new Command({
     async run(message, args, client) {
 
         const kickTargetUsername = args[1];
-        if(kickTargetUsername[0] === "<") {
+        if (kickTargetUsername[0] === "<") {
             // fetch user id by mention => "?votekick @Melle"
             kickTargetId = formatId(kickTargetUsername);
         }
@@ -29,7 +29,7 @@ module.exports = new Command({
         }
         const kickTarget = message.guild.members.cache.get(kickTargetId);
         console.log(kickTarget.bannable);
-        if (!kickTarget) { 
+        if (!kickTarget) {
             message.reply("User not found");
             return;
         }
@@ -48,7 +48,7 @@ module.exports = new Command({
 
             // returns current date if no parameters
             .setTimestamp();
-        
+
         let botMessage = await message.channel.send({ embeds: [embed] });
         try {
             await botMessage.react("👍");
@@ -62,11 +62,11 @@ module.exports = new Command({
         };
 
         // collects reactions for 3 minutes
-        const collector = botMessage.createReactionCollector({ filter, time: 180000 });
+        let collector = botMessage.createReactionCollector({ filter, time: 180000 });
 
         collector.on('collect', (reaction, user) => {
 
-            if(hasVoted.includes(user.id)) {
+            if (hasVoted.includes(user.id)) {
                 return;
             }
             else {
@@ -74,27 +74,35 @@ module.exports = new Command({
             }
 
             // updating the votes
-            if(votes.length < 5) {
-                if(reaction.emoji.name === "👍") {
+            if (votes.length < 5) {
+                if (reaction.emoji.name === "👍") {
                     votes.push(1);
                     votesString += "🟩 ";
                 }
-                else if(reaction.emoji.name === "👎") {
+                else if (reaction.emoji.name === "👎") {
                     votes.push(0);
                     votesString += "🟥 ";
                 }
-                if(votes.length >= 4) {
+                if (votes.length >= 4) {
                     // calculate vote result
                     let voteScore = 0;
-                    for(let i = 0; i < votes.length; i++) {
+                    for (let i = 0; i < votes.length; i++) {
                         voteScore += votes[i];
                     }
-                    if(voteScore >= 4) {
+                    if (voteScore >= 4) {
+                        collector = null;
+                        votes = [];
+                        hasVoted = [];
                         kickTarget.kick();
                     }
                 }
+                if(votes.length == 5) {
+                    collector = null;
+                    votes = [];
+                    hasVoted = [];
+                }
             }
-            
+
             console.log(`Collected ${reaction.emoji.name} from ${user.username}`);
 
             // update embed to show new votes
@@ -103,7 +111,7 @@ module.exports = new Command({
             updatedEmbed.setDescription(votesString);
             botMessage.edit({ embeds: [updatedEmbed] });
         });
-        
+
         collector.on('end', collected => {
             console.log(`Collected ${collected.size} items`);
         });

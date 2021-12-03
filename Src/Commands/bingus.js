@@ -2,10 +2,10 @@ const Command = require("../Structures/Command.js");
 const Discord = require("discord.js");
 
 const bingusImages = [
-    "https://cdn.discordapp.com/attachments/454970814681317377/905158564249735219/bigus_2.jpg", 
-    "https://cdn.discordapp.com/attachments/454970814681317377/905158591986688090/bigus_1.jpg",
-    "https://cdn.discordapp.com/attachments/454970814681317377/905158621938204702/bpgis.jpg",
-    "https://cdn.discordapp.com/attachments/454970814681317377/905158666162929704/bagus_3.jpg"
+    "https://i.kym-cdn.com/entries/icons/original/000/035/557/Hi_Bingus.png", 
+    "https://i.imgur.com/9TlwWYI.jpg",
+    "https://pbs.twimg.com/media/EpXOllGXMAARo5U.jpg",
+    "https://i.ytimg.com/vi/Phju-do--Og/hqdefault.jpg"
 ];
 
 module.exports = new Command({

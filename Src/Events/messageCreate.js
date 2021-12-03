@@ -1,6 +1,7 @@
 const Event = require("../Structures/Event.js");
 
 module.exports = new Event("messageCreate", (client, message) => {
+    if(message.author.bot) return;
 
     if (!message.content.startsWith(client.prefix)) return;
 
